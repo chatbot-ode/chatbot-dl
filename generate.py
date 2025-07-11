@@ -5,20 +5,18 @@ import tensorflow as tf
 from transformers import AutoTokenizer
 from transformers import TFGPT2LMHeadModel
 
-
-tokenizer = AutoTokenizer.from_pretrained('skt/kogpt2-base-v2',
-                                            bos_token='<s>',
-                                            eos_token='</s>',
-                                            pad_token='<pad>')
-model = TFGPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2', from_pt=True)
-
 # 기준 경로
 base_path = os.path.dirname(os.path.realpath(__file__))
 
 if len(sys.argv) < 2:
     sys.exit(1)
 
-# model.load_weights(f"{base_path}/chatbot.weights.h5")
+tokenizer = AutoTokenizer.from_pretrained('skt/kogpt2-base-v2',
+                                            bos_token='<s>',
+                                            eos_token='</s>',
+                                            pad_token='<pad>')
+model = TFGPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2', from_pt=True)
+model.load_weights(f"{base_path}/chatbot.weights.h5")
 
 def chatbot(user_text):
     input_ids = tokenizer.encode(f"<s><usr>{user_text}<sys>")
